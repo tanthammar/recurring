@@ -1,14 +1,11 @@
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
-
-# Laravel Eloquent RRULE tools
+# Laravel Eloquent RRULE helpers
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tanthammar/recurring.svg?style=flat-square)](https://packagist.org/packages/tanthammar/recurring)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/tanthammar/recurring/run-tests?label=tests)](https://github.com/tanthammar/recurring/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/tanthammar/recurring/Check%20&%20fix%20styling?label=code%20style)](https://github.com/tanthammar/recurring/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/tanthammar/recurring.svg?style=flat-square)](https://packagist.org/packages/tanthammar/recurring)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+This package adds Eloquent helpers for [Simshauns php Recurr package](https://github.com/simshaun/recurr)
 
 ## Installation
 
@@ -19,10 +16,51 @@ composer require tanthammar/recurring
 ```
 
 ## Usage
+Example pretends you have a DatePattern model in your codebase.
+
+Your model must have the following attributes:
+```php
+protected $casts = [
+    'start_at'  => 'date', //not nullable
+    'end_at'    => 'date',
+    'timezone' => 'string',
+    'str_rule'  => 'string',
+    'except_on' => 'array', //array with excluded dates
+];
+```
+
+Apply the `IsRecurring` trait to the model
+```php
+class DatePattern extends Model
+{
+    use IsRecurring;
+    //...
+}
+```
+
+After saving a string `rrule` to the `str_rule` field, you'll have access to the following methods.
+For further information about additional methods see https://github.com/simshaun/recurr
 
 ```php
-$recurring = new tanthammar\Recurring();
-echo $recurring->echoPhrase('Hello, tanthammar!');
+$dp = App\Models\DatePattern::first();
+
+$dp->recurr()->firstStart(): bool|Carbon
+$dp->recurr()->firstEnd(): bool|Carbon
+
+$dp->recurr()->lastStart(): bool|Carbon
+$dp->recurr()->lastEnd(): bool|Carbon
+
+$dp->recurr()->nextStart(): bool|Carbon
+$dp->recurr()->nextEnd(): bool|Carbon
+
+$dp->recurr()->currentStart(): bool|Carbon
+$dp->recurr()->currentEnd(): bool|Carbon
+
+$dp->recurr()->rule(): Recurr\Rule
+
+$dp->recurr()->schedule(): Recurr\RecurrenceCollection
+
+$dp->recurr()->scheduleBetween($startDate, $endDate): Recurr\RecurrenceCollection
 ```
 
 ## Contributing

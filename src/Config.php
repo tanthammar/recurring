@@ -3,7 +3,6 @@
 namespace TantHammar\Recurring;
 
 use Illuminate\Contracts\Support\Arrayable;
-use JetBrains\PhpStorm\ArrayShape;
 use Recurr\Frequency;
 
 class Config implements Arrayable

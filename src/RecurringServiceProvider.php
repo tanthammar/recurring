@@ -4,7 +4,6 @@ namespace TantHammar\Recurring;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use tanthammar\Recurring\Commands\RecurringCommand;
 
 class RecurringServiceProvider extends PackageServiceProvider
 {
