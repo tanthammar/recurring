@@ -1,6 +1,6 @@
 <?php
 
-namespace tanthammar\Recurring;
+namespace TantHammar\Recurring;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -15,11 +15,6 @@ class RecurringServiceProvider extends PackageServiceProvider
          *
          * More info: https://github.com/spatie/laravel-package-tools
          */
-        $package
-            ->name('recurring')
-            ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_recurring_table')
-            ->hasCommand(RecurringCommand::class);
+        $package->name('recurring');
     }
 }
