@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace tanthammar\Recurring\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class RecurringCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'recurring';
 
     public $description = 'My command';
 
