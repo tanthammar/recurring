@@ -22,6 +22,7 @@ class RRule implements Rule
     {
         try {
             new \Recurr\Rule(rrule: $value);
+
             return true;
         } catch (InvalidRRule $e) {
             return false;

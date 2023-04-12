@@ -18,13 +18,12 @@ class Config implements Arrayable
         Frequency::SECONDLY => 'SECONDLY',
     ];
 
-
     public function __construct(
         public string $startDate,
         public string $timezone,
         public string $str_rule,
-        public string $endDate = "",
-        public array  $except_on = [])
+        public string $endDate = '',
+        public array $except_on = [])
     {
     }
 
@@ -42,6 +41,7 @@ class Config implements Arrayable
     public function setStartDate(string $value): self
     {
         $this->startDate = $value;
+
         return $this;
     }
 
@@ -50,10 +50,10 @@ class Config implements Arrayable
         return $this->endDate;
     }
 
-
     public function setEndDate(string $value): self
     {
         $this->endDate = $value;
+
         return $this;
     }
 
@@ -65,6 +65,7 @@ class Config implements Arrayable
     public function setTimezone(string $value): self
     {
         $this->timezone = $value;
+
         return $this;
     }
 
@@ -76,6 +77,7 @@ class Config implements Arrayable
     public function setExceptions(array $dates): self
     {
         $this->except_on = $dates;
+
         return $this;
     }
 

@@ -2,7 +2,7 @@
 
 namespace TantHammar\Recurring\Traits;
 
-use JetBrains\PhpStorm\ArrayShape;
+use TantHammar\Recurring\Builder;
 
 trait IsRecurring
 {
@@ -15,9 +15,9 @@ trait IsRecurring
     {
         return (object) [
             'start_at' => $this->start_at,
-            'end_at'   => $this->end_at,
-            'timezone'   => $this->timezone,
-            'str_rule'  => $this->str_rule,
+            'end_at' => $this->end_at,
+            'timezone' => $this->timezone,
+            'str_rule' => $this->str_rule,
             'except_on' => $this->except_on,
         ];
     }

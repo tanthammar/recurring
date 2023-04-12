@@ -35,7 +35,7 @@ class Builder
      */
     public function firstStart(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -48,7 +48,7 @@ class Builder
      */
     public function firstEnd(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -60,7 +60,7 @@ class Builder
      */
     public function lastStart(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class Builder
      */
     public function lastEnd(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -84,11 +84,11 @@ class Builder
      */
     public function nextStart(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
-        if (!$next = $schedule->next()) {
+        if (! $next = $schedule->next()) {
             return false;
         }
 
@@ -100,11 +100,11 @@ class Builder
      */
     public function nextEnd(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
-        if (!$next = $schedule->next()) {
+        if (! $next = $schedule->next()) {
             return false;
         }
 
@@ -116,7 +116,7 @@ class Builder
      */
     public function currentStart(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -128,16 +128,16 @@ class Builder
      */
     public function currentEnd(): bool|Carbon
     {
-        if (!$schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
         return Carbon::instance($schedule->current()->getEnd());
     }
 
-
     /**
      * Alias for schedule()
+     *
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
@@ -207,10 +207,11 @@ class Builder
         if (count($this->config->except_on) > 0) {
             $rule->setExDates(
                 collect($this->config->except_on)
-                    ->map(fn($date) => new DateExclusion(Carbon::create($date, $timezone)->toDateTime(), false))
+                    ->map(fn ($date) => new DateExclusion(Carbon::create($date, $timezone)->toDateTime(), false))
                     ->toArray()
             );
         }
+
         return $rule;
     }
 
@@ -241,6 +242,6 @@ class Builder
      */
     private function convertDate(null|string|DateTime $date): DateTime
     {
-        return ($date instanceof DateTime ? $date : new DateTime($date ?? 'now'));
+        return $date instanceof DateTime ? $date : new DateTime($date ?? 'now');
     }
 }
