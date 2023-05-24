@@ -19,13 +19,15 @@ Let's say you have a DatePattern model in your codebase.
 Your model must have the following attributes:
 ```php
 protected $casts = [
-    'start_at'  => 'date', //not nullable
-    'end_at'    => 'date', //OBSERVE that end_at represents DURATION not last occurrence, src: https://github.com/simshaun/recurr/issues/44
+    'start_at'  => 'immutable_date', //not nullable
+    'end_at'    => 'immutable_date', //represents duration, not last occurrence
     'timezone' => 'string',
     'str_rule'  => 'string',
     'except_on' => 'array', //array with excluded dates
 ];
 ```
+
+**OBSERVE that end_at represents DURATION** not last occurrence, src: https://github.com/simshaun/recurr/issues/44
 
 Apply the `IsRecurring` trait to the model
 ```php
