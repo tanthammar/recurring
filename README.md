@@ -20,7 +20,7 @@ Your model must have the following attributes:
 ```php
 protected $casts = [
     'start_at'  => 'date', //not nullable
-    'end_at'    => 'date',
+    'end_at'    => 'date', //OBSERVE that end_at represents DURATION not last occurrence, src: https://github.com/simshaun/recurr/issues/44
     'timezone' => 'string',
     'str_rule'  => 'string',
     'except_on' => 'array', //array with excluded dates
