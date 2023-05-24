@@ -14,7 +14,7 @@ composer require tanthammar/recurring
 ```
 
 ## Usage
-Example pretends you have a DatePattern model in your codebase.
+Let's say you have a DatePattern model in your codebase.
 
 Your model must have the following attributes:
 ```php
