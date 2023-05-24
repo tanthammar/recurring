@@ -19,10 +19,10 @@ Let's say you have a DatePattern model in your codebase.
 Your model must have the following attributes:
 ```php
 protected $casts = [
-    'start_at'  => 'immutable_date', //not nullable
-    'end_at'    => 'immutable_date', //represents duration, not last occurrence
-    'timezone' => 'string',
-    'str_rule'  => 'string',
+    'start_at'  => 'immutable_date', //required
+    'end_at'    => 'immutable_date', //nullable, represents duration, not last occurrence
+    'timezone' => 'string', //required
+    'str_rule'  => 'string', //required
     'except_on' => 'array', //array with excluded dates
 ];
 ```
