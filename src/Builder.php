@@ -37,7 +37,7 @@ class Builder
      */
     public function firstStart(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule(1)) {
             return false;
         }
 
@@ -50,7 +50,7 @@ class Builder
      */
     public function firstEnd(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule(1)) {
             return false;
         }
 
@@ -151,7 +151,9 @@ class Builder
     /** 732 is default limit of recurrences returned from the transformer if infinit rrule */
     public function transformer(int $limit): ArrayTransformer
     {
-        if($limit > 732) $limit = 732;
+        if($limit > 732) {
+            $limit = 732;
+        }
 
         $transformerConfig = new ArrayTransformerConfig();
         $transformerConfig->enableLastDayOfMonthFix();
