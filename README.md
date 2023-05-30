@@ -41,6 +41,9 @@ class DatePattern extends Model
 After saving a string `rrule` to the `str_rule` field, you'll have access to the following methods.
 For further information about additional methods see https://github.com/simshaun/recurr
 
+All `RecurrenceCollection` methods returns max 732 recurrences. (Same as parent simshaun/recurr package).
+Use the `$count` parameter to set how many recurrences you want returned.
+
 ```php
 $dp = App\Models\DatePattern::first();
 
@@ -56,11 +59,18 @@ $dp->recurr()->nextEnd(): bool|Carbon
 $dp->recurr()->currentStart(): bool|Carbon
 $dp->recurr()->currentEnd(): bool|Carbon
 
-$dp->recurr()->rule(): Recurr\Rule
+$dp->recurr()->rule(): Rule
 
-$dp->recurr()->schedule(): Recurr\RecurrenceCollection
+$dp->recurr()->all(): RecurrenceCollection, //limited to 732 recurrences
 
-$dp->recurr()->scheduleBetween($startDate, $endDate): Recurr\RecurrenceCollection
+$dp->recurr()->schedule(?int $count): RecurrenceCollection
+
+$dp->recurr()->scheduleBetween(string|DateTime $startDate, string|DateTime $endDate, ?int $count): RecurrenceCollection
+
+$dp->recurr()->scheduleBefore(string|DateTime $beforeDate, ?int $count): RecurrenceCollection
+
+$dp->recurr()->scheduleAfter(string|DateTime $afterDate, ?int $count): RecurrenceCollection
+
 ```
 
 ## Contributing

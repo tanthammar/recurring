@@ -14,6 +14,8 @@ use Recurr\RecurrenceCollection;
 use Recurr\Rule;
 use Recurr\Transformer\ArrayTransformer;
 use Recurr\Transformer\ArrayTransformerConfig;
+use Recurr\Transformer\Constraint\AfterConstraint;
+use Recurr\Transformer\Constraint\BeforeConstraint;
 use Recurr\Transformer\Constraint\BetweenConstraint;
 use Recurr\Transformer\TextTransformer;
 
@@ -146,18 +148,32 @@ class Builder
         return $this->schedule();
     }
 
-    /**
-     * @throws InvalidWeekday|InvalidRRule
-     */
-    public function schedule(): RecurrenceCollection
+    /** 732 is default limit of recurrences returned from the transformer if infinit rrule */
+    public function transformer(int $limit): ArrayTransformer
     {
+        if($limit > 732) $limit = 732;
+
         $transformerConfig = new ArrayTransformerConfig();
         $transformerConfig->enableLastDayOfMonthFix();
+        $transformerConfig->setVirtualLimit($limit);
 
         $transformer = new ArrayTransformer();
         $transformer->setConfig($transformerConfig);
 
-        return $transformer->transform($this->rule());
+        return $transformer;
+    }
+
+    protected function limit(?int $limit = null): int
+    {
+        return is_null($limit) ? 732 : $limit;
+    }
+
+    /**
+     * @throws InvalidWeekday|InvalidRRule
+     */
+    public function schedule(?int $count = null): RecurrenceCollection
+    {
+        return $this->transformer($this->limit($count))->transform($this->rule());
     }
 
     /**
@@ -165,27 +181,47 @@ class Builder
      * @throws InvalidWeekday
      * @throws Exception
      */
-    public function scheduleBetween(string|DateTime $startDate, string|DateTime $endDate): RecurrenceCollection
+    public function scheduleBetween(string|DateTime $startDate, string|DateTime $endDate, ?int $count = null): RecurrenceCollection
     {
-        $startDate = $this->convertDate($startDate);
-        $endDate = $this->convertDate($endDate);
-
-        $transformerConfig = new ArrayTransformerConfig();
-        $transformerConfig->enableLastDayOfMonthFix();
-
-        $transformer = new ArrayTransformer();
-        $transformer->setConfig($transformerConfig);
 
         // The $countConstraintFailures in the ArrayTransformer::transform() method
         // decides whether the transformer will stop looping or just count failures
         // toward the limit of recurrences.
         // true = count toward limit
-        // false = stop looping
+        // false = stop looping after endDate
         // We want it to stop looping since we're searching between two dates
         // so that once the dates go beyond the range it will return.
-        return $transformer->transform(
+        return $this->transformer($this->limit($count))->transform(
             $this->rule(),
-            constraint: new BetweenConstraint($startDate, $endDate, true),
+            constraint: new BetweenConstraint($this->convertDate($startDate), $this->convertDate($endDate), true),
+            countConstraintFailures: false
+        );
+    }
+
+    /**
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
+     * @throws Exception
+     */
+    public function scheduleBefore(string|DateTime $beforeDate, ?int $count = null): RecurrenceCollection
+    {
+        return $this->transformer($this->limit($count))->transform(
+            $this->rule(),
+            constraint: new BeforeConstraint($this->convertDate($beforeDate), true),
+            countConstraintFailures: false
+        );
+    }
+
+    /**
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
+     * @throws Exception
+     */
+    public function scheduleAfter(string|DateTime $afterDate, ?int $count = null): RecurrenceCollection
+    {
+        return $this->transformer($this->limit($count))->transform(
+            $this->rule(),
+            constraint: new AfterConstraint($this->convertDate($afterDate), true),
             countConstraintFailures: false
         );
     }
