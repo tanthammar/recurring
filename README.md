@@ -47,15 +47,19 @@ Use the `$count` parameter to set how many recurrences you want returned.
 ```php
 $dp = App\Models\DatePattern::first();
 
+$dp->recurr()->first(): bool|Recurrence
 $dp->recurr()->firstStart(): bool|Carbon
 $dp->recurr()->firstEnd(): bool|Carbon
 
+$dp->recurr()->last(): bool|Recurrence
 $dp->recurr()->lastStart(): bool|Carbon
 $dp->recurr()->lastEnd(): bool|Carbon
 
+$dp->recurr()->next(): bool|Recurrence
 $dp->recurr()->nextStart(): bool|Carbon
 $dp->recurr()->nextEnd(): bool|Carbon
 
+$dp->recurr()->current(): bool|Recurrence
 $dp->recurr()->currentStart(): bool|Carbon
 $dp->recurr()->currentEnd(): bool|Carbon
 

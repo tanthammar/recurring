@@ -10,6 +10,7 @@ use JetBrains\PhpStorm\Pure;
 use Recurr\DateExclusion;
 use Recurr\Exception\InvalidRRule;
 use Recurr\Exception\InvalidWeekday;
+use Recurr\Recurrence;
 use Recurr\RecurrenceCollection;
 use Recurr\Rule;
 use Recurr\Transformer\ArrayTransformer;
@@ -35,13 +36,25 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function firstStart(): bool|Carbon
+    public function first(): bool|Recurrence
     {
         if (! $schedule = $this->schedule(1)) {
             return false;
         }
 
-        return Carbon::instance($schedule->first()->getStart());
+        return $schedule->first();
+    }
+
+    /**
+     * @throws InvalidWeekday|InvalidRRule
+     */
+    public function firstStart(): bool|Carbon
+    {
+        if (! $first = $this->first()) {
+            return false;
+        }
+
+        return Carbon::instance($first->getStart());
     }
 
     /**
@@ -50,11 +63,24 @@ class Builder
      */
     public function firstEnd(): bool|Carbon
     {
-        if (! $schedule = $this->schedule(1)) {
+        if (! $first = $this->first()) {
             return false;
         }
 
-        return Carbon::instance($schedule->first()->getEnd());
+        return Carbon::instance($first->getEnd());
+    }
+
+    /**
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
+     */
+    public function last(): bool|Recurrence
+    {
+        if (! $schedule = $this->schedule()) {
+            return false;
+        }
+
+        return $schedule->last();
     }
 
     /**
@@ -62,11 +88,11 @@ class Builder
      */
     public function lastStart(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
+        if (! $last = $this->last()) {
             return false;
         }
 
-        return Carbon::instance($schedule->last()->getStart());
+        return Carbon::instance($last->getStart());
     }
 
     /**
@@ -74,11 +100,28 @@ class Builder
      */
     public function lastEnd(): bool|Carbon
     {
+        if (! $last = $this->last()) {
+            return false;
+        }
+
+        return Carbon::instance($last->getEnd());
+    }
+
+    /**
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
+     */
+    public function next(): bool|Recurrence
+    {
         if (! $schedule = $this->schedule()) {
             return false;
         }
 
-        return Carbon::instance($schedule->last()->getEnd());
+        if (! $next = $schedule->next()) {
+            return false;
+        }
+
+        return $next;
     }
 
     /**
@@ -86,11 +129,7 @@ class Builder
      */
     public function nextStart(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
-            return false;
-        }
-
-        if (! $next = $schedule->next()) {
+        if (! $next = $this->next()) {
             return false;
         }
 
@@ -102,11 +141,7 @@ class Builder
      */
     public function nextEnd(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
-            return false;
-        }
-
-        if (! $next = $schedule->next()) {
+        if (! $next = $this->next()) {
             return false;
         }
 
@@ -114,15 +149,28 @@ class Builder
     }
 
     /**
-     * @throws InvalidWeekday|InvalidRRule
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
      */
-    public function currentStart(): bool|Carbon
+    public function current(): bool|Recurrence
     {
         if (! $schedule = $this->schedule()) {
             return false;
         }
 
-        return Carbon::instance($schedule->current()->getStart());
+        return $schedule->current();
+    }
+
+    /**
+     * @throws InvalidWeekday|InvalidRRule
+     */
+    public function currentStart(): bool|Carbon
+    {
+        if (! $current = $this->current()) {
+            return false;
+        }
+
+        return Carbon::instance($current->getStart());
     }
 
     /**
@@ -130,11 +178,11 @@ class Builder
      */
     public function currentEnd(): bool|Carbon
     {
-        if (! $schedule = $this->schedule()) {
+        if (! $current = $this->current()) {
             return false;
         }
 
-        return Carbon::instance($schedule->current()->getEnd());
+        return Carbon::instance($current->getEnd());
     }
 
     /**
