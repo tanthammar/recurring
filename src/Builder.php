@@ -231,6 +231,15 @@ class Builder
      * @throws InvalidWeekday
      * @throws Exception
      */
+    /**
+     * Includes the $startDate and $endDate in the result
+     * @param string|DateTime $startDate
+     * @param string|DateTime $endDate
+     * @param int|null $count
+     * @return RecurrenceCollection
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
+     */
     public function scheduleBetween(string|DateTime $startDate, string|DateTime $endDate, ?int $count = null): RecurrenceCollection
     {
 
@@ -249,6 +258,7 @@ class Builder
     }
 
     /**
+     * Includes the $beforeDate in the results
      * @throws InvalidRRule
      * @throws InvalidWeekday
      * @throws Exception
@@ -266,6 +276,14 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      * @throws Exception
+     */
+    /**
+     * Includes the $afterDate in the results
+     * @param string|DateTime $afterDate
+     * @param int|null $count
+     * @return RecurrenceCollection
+     * @throws InvalidRRule
+     * @throws InvalidWeekday
      */
     public function scheduleAfter(string|DateTime $afterDate, ?int $count = null): RecurrenceCollection
     {
@@ -293,7 +311,7 @@ class Builder
         if (count($this->config->except_on) > 0) {
             $rule->setExDates(
                 collect($this->config->except_on)
-                    ->map(fn ($date) => new DateExclusion(Carbon::create($date, $timezone)->toDateTime(), false))
+                    ->map(fn ($date) => new DateExclusion(Carbon::parse($date, $timezone)->toDateTime(), false))
                     ->toArray()
             );
         }
