@@ -38,7 +38,7 @@ class Builder
      */
     public function first(): bool|Recurrence
     {
-        if (! $schedule = $this->schedule()) {
+        if (! $schedule = $this->schedule(20)) {
             return false;
         }
 
