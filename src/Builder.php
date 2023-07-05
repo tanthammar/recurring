@@ -303,9 +303,9 @@ class Builder
         $timezone = $this->config->timezone;
         $rule = new Rule(
             rrule: $this->config->str_rule, //UNTIL and COUNT in str_rule affects last() occurrence
-            startDate: Carbon::create($this->config->startDate, $timezone)->toDateTime(),
+            startDate: Carbon::parse($this->config->startDate, $timezone)->toDateTime(),
             //endDate is DURATION not last occurrence, https://github.com/simshaun/recurr/issues/44
-            endDate: $this->config->endDate ? Carbon::create($this->config->endDate, $timezone)->toDateTime() : '',
+            endDate: $this->config->endDate ? Carbon::parse($this->config->endDate, $timezone)->toDateTime() : '',
             timezone: $this->config->timezone,
         );
         if (count($this->config->except_on) > 0) {

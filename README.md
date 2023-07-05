@@ -13,21 +13,27 @@ You can install the package via composer:
 composer require tanthammar/recurring
 ```
 
+## Important
+- `start_at` and `end_at` are expected to be stored in its timezone, not converted to utc in db. The `Builder` will convert them using the timezone attribute.
+- `end_at` represents **DURATION** not last recurrence, src: https://github.com/simshaun/recurr/issues/44
+
 ## Usage
 Let's say you have a DatePattern model in your codebase.
+
+The Builder parses them in combination with the timezone attribute.
+
 
 Your model must have the following attributes:
 ```php
 protected $casts = [
     'start_at'  => 'immutable_date', //required
-    'end_at'    => 'immutable_date', //nullable, represents duration, not last occurrence
+    'end_at'    => 'immutable_date', //nullable, represents duration, not last recurrence
     'timezone' => 'string', //required
     'str_rule'  => 'string', //required
     'except_on' => 'array', //array with excluded dates
 ];
 ```
 
-**OBSERVE that end_at represents DURATION** not last occurrence, src: https://github.com/simshaun/recurr/issues/44
 
 Apply the `IsRecurring` trait to the model
 ```php
