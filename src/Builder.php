@@ -38,7 +38,7 @@ class Builder
      */
     public function first(): bool|Recurrence
     {
-        if (! $schedule = $this->schedule(1)) {
+        if (! $schedule = $this->schedule()) {
             return false;
         }
 
@@ -240,6 +240,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
+    /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
     public function scheduleBetween(string|DateTime $startDate, string|DateTime $endDate, ?int $count = null): RecurrenceCollection
     {
 
@@ -263,6 +264,7 @@ class Builder
      * @throws InvalidWeekday
      * @throws Exception
      */
+    /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
     public function scheduleBefore(string|DateTime $beforeDate, ?int $count = null): RecurrenceCollection
     {
         return $this->transformer($this->limit($count))->transform(
@@ -285,6 +287,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
+    /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
     public function scheduleAfter(string|DateTime $afterDate, ?int $count = null): RecurrenceCollection
     {
         return $this->transformer($this->limit($count))->transform(
