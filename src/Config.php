@@ -23,8 +23,8 @@ class Config implements Arrayable
         public string $timezone,
         public string $str_rule,
         public string $endDate = '',
-        public array $except_on = [])
-    {
+        public array $except_on = []
+    ) {
     }
 
     // for future validation?

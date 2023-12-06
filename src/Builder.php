@@ -36,7 +36,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function first(): bool|Recurrence
+    public function first(): bool | Recurrence
     {
         if (! $schedule = $this->schedule(20)) {
             return false;
@@ -48,7 +48,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function firstStart(): bool|Carbon
+    public function firstStart(): bool | Carbon
     {
         if (! $first = $this->first()) {
             return false;
@@ -61,7 +61,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
-    public function firstEnd(): bool|Carbon
+    public function firstEnd(): bool | Carbon
     {
         if (! $first = $this->first()) {
             return false;
@@ -74,7 +74,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
-    public function last(): bool|Recurrence
+    public function last(): bool | Recurrence
     {
         if (! $schedule = $this->schedule()) {
             return false;
@@ -86,7 +86,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function lastStart(): bool|Carbon
+    public function lastStart(): bool | Carbon
     {
         if (! $last = $this->last()) {
             return false;
@@ -98,7 +98,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function lastEnd(): bool|Carbon
+    public function lastEnd(): bool | Carbon
     {
         if (! $last = $this->last()) {
             return false;
@@ -111,7 +111,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
-    public function next(): bool|Recurrence
+    public function next(): bool | Recurrence
     {
         if (! $schedule = $this->schedule()) {
             return false;
@@ -127,7 +127,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function nextStart(): bool|Carbon
+    public function nextStart(): bool | Carbon
     {
         if (! $next = $this->next()) {
             return false;
@@ -139,7 +139,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function nextEnd(): bool|Carbon
+    public function nextEnd(): bool | Carbon
     {
         if (! $next = $this->next()) {
             return false;
@@ -152,7 +152,7 @@ class Builder
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
-    public function current(): bool|Recurrence
+    public function current(): bool | Recurrence
     {
         if (! $schedule = $this->schedule()) {
             return false;
@@ -164,7 +164,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function currentStart(): bool|Carbon
+    public function currentStart(): bool | Carbon
     {
         if (! $current = $this->current()) {
             return false;
@@ -176,7 +176,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function currentEnd(): bool|Carbon
+    public function currentEnd(): bool | Carbon
     {
         if (! $current = $this->current()) {
             return false;
@@ -199,7 +199,7 @@ class Builder
     /** 732 is default limit of recurrences returned from the transformer if infinit rrule */
     public function transformer(int $limit): ArrayTransformer
     {
-        if($limit > 732) {
+        if ($limit > 732) {
             $limit = 732;
         }
 
@@ -213,7 +213,7 @@ class Builder
         return $transformer;
     }
 
-    protected function limit(?int $limit = null): int
+    protected function limit(int $limit = null): int
     {
         return is_null($limit) ? 732 : $limit;
     }
@@ -221,7 +221,7 @@ class Builder
     /**
      * @throws InvalidWeekday|InvalidRRule
      */
-    public function schedule(?int $count = null): RecurrenceCollection
+    public function schedule(int $count = null): RecurrenceCollection
     {
         return $this->transformer($this->limit($count))->transform($this->rule());
     }
@@ -233,15 +233,12 @@ class Builder
      */
     /**
      * Includes the $startDate and $endDate in the result
-     * @param string|DateTime $startDate
-     * @param string|DateTime $endDate
-     * @param int|null $count
-     * @return RecurrenceCollection
+     *
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
     /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
-    public function scheduleBetween(string|DateTime $startDate, string|DateTime $endDate, ?int $count = null): RecurrenceCollection
+    public function scheduleBetween(string | DateTime $startDate, string | DateTime $endDate, int $count = null): RecurrenceCollection
     {
 
         // The $countConstraintFailures in the ArrayTransformer::transform() method
@@ -260,12 +257,13 @@ class Builder
 
     /**
      * Includes the $beforeDate in the results
+     *
      * @throws InvalidRRule
      * @throws InvalidWeekday
      * @throws Exception
      */
     /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
-    public function scheduleBefore(string|DateTime $beforeDate, ?int $count = null): RecurrenceCollection
+    public function scheduleBefore(string | DateTime $beforeDate, int $count = null): RecurrenceCollection
     {
         return $this->transformer($this->limit($count))->transform(
             $this->rule(),
@@ -281,14 +279,12 @@ class Builder
      */
     /**
      * Includes the $afterDate in the results
-     * @param string|DateTime $afterDate
-     * @param int|null $count
-     * @return RecurrenceCollection
+     *
      * @throws InvalidRRule
      * @throws InvalidWeekday
      */
     /** Beware that if count = 1 and that hits an exeption date, collection will be empty */
-    public function scheduleAfter(string|DateTime $afterDate, ?int $count = null): RecurrenceCollection
+    public function scheduleAfter(string | DateTime $afterDate, int $count = null): RecurrenceCollection
     {
         return $this->transformer($this->limit($count))->transform(
             $this->rule(),
@@ -347,7 +343,7 @@ class Builder
     /**
      * @throws Exception
      */
-    private function convertDate(null|string|DateTime $date): DateTime
+    private function convertDate(null | string | DateTime $date): DateTime
     {
         return $date instanceof DateTime ? $date : new DateTime($date ?? 'now');
     }
