@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use JetBrains\PhpStorm\Pure;
 use Recurr\DateExclusion;
 use Recurr\Exception\InvalidRRule;
 use Recurr\Exception\InvalidWeekday;
@@ -26,7 +25,6 @@ class Builder
 
     private Config $config;
 
-    #[Pure]
     public function __construct(Model $model)
     {
         $this->model = $model;
@@ -326,7 +324,6 @@ class Builder
         return (new TextTransformer)->transform($this->rule());
     }
 
-    #[Pure]
     private function buildConfig(): Config
     {
         $config = $this->model->getRecurringConfig();
